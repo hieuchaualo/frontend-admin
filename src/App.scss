@@ -1,0 +1,117 @@
+// Merge the maps
+$theme-colors: (
+  "orange": #E86F5D,
+  "pink": #d50066,
+  "purple": #6f42c1,
+  "primary": #0d6efd,
+  "info": #0dcaf0,
+  "teal": #6ecb63,
+  "pink-light": #fdeaf1,
+  "white": #ffffff,
+  "black": #000,
+  "warning": #ffc107,
+  "danger": #dc3545,
+  "cyan": #00ade8,
+  "success": #198754,
+  "light": #f8f9fa,
+  "grey": #e5e8eb,
+  "secondary": #6c757d,
+  "third": #353840,
+  "dark": #212529,
+);
+
+// mouse and point
+.cursor-none {
+  pointer-events: none;
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
+.cursor-text:hover {
+  cursor: text;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.text-line {
+  white-space: pre-line;
+}
+
+.shadow-hover {
+  transition: opacity 0.2s linear;
+}
+
+.shadow-hover:hover {
+  box-shadow: 0px 5px 15px 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.bg-transparent {
+  background-color: transparent !important;
+}
+
+.bg-light-50 {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.background-color-none-hover:hover {
+  background-color: #f8f9fa !important;
+}
+
+.cooltipz-bg-color {
+  --cooltipz-bg-color: #f8f9fa;
+  --cooltipz-border-color: #f8f9fa;
+  --cooltipz-text-color: #212529;
+}
+
+.cooltipz-bg-color-dark {
+  --cooltipz-bg-color: #212529;
+  --cooltipz-border-color: #212529;
+  --cooltipz-text-color: #f8f9fa;
+}
+
+.accordion-button {
+  font-weight: 400;
+  color: #353840 !important;
+  background-color: #f8f9fa !important;
+}
+
+.accordion-button:focus {
+  border: none;
+  box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color) !important;
+}
+
+.accordion-button:not(.collapsed) {
+  border: none;
+  color: #353840 !important;
+  background-color: #fff !important;
+}
+
+.navbar-toggler {
+  padding: 0 8px !important;
+}
+
+.input-transparent {
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.input-transparent:focus {
+  border: none;
+  outline: none;
+}
+
+#collasible-nav-dropdown {
+  padding: 0 !important;
+}
+
+@import "~bootstrap/scss/bootstrap.scss";

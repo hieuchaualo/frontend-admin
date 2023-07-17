@@ -1,0 +1,18 @@
+const ACCOUNT_STATE = {
+    UNVERIFIED: 'UNVERIFIED',
+    VERIFIED: "VERIFIED",
+    BANNED: "BANNED",
+}
+
+const BUTTON_STATE = {
+    DISABLE: 'DISABLE',
+    ENABLE: 'ENABLE',
+    PENDING: 'PENDING',
+    DONE:'DONE',
+    REJECTED: 'REJECTED'
+}
+
+export {
+    BUTTON_STATE,
+    ACCOUNT_STATE,
+}
