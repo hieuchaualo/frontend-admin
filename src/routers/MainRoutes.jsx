@@ -5,6 +5,7 @@ import {
   Error503,
   Home,
   Login,
+  MiniTests,
 } from "../pages"
 
 const ROUTERS_PATH = {
@@ -29,7 +30,10 @@ const MainRoutes = () => {
             <Route path={ROUTERS_PATH.home} element={<Navigate to="/" replace />} />
 
             {/* Account */}
-            < Route path={ROUTERS_PATH.login} element={<Login pageTitle="Login" />} />
+            <Route path={ROUTERS_PATH.login} element={<Login pageTitle="Login" />} />
+
+            {/* System management */}
+            <Route path={ROUTERS_PATH.miniTests} element={<MiniTests pageTitle={'Mini tests'} />} />
 
             {/* Error */}
             <Route path="*" element={<Error404 pageTitle="Not found" />} />
