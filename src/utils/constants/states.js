@@ -1,18 +1,17 @@
-const ACCOUNT_STATE = {
-    UNVERIFIED: 'UNVERIFIED',
-    VERIFIED: "VERIFIED",
-    BANNED: "BANNED",
+const ACCOUNT_ROLES = {
+    ADMIN: 'admin',
+    USER: "user",
 }
 
 const BUTTON_STATE = {
     DISABLE: 'DISABLE',
     ENABLE: 'ENABLE',
     PENDING: 'PENDING',
-    DONE:'DONE',
-    REJECTED: 'REJECTED'
+    SUCCESS:'SUCCESS',
+    ERROR: 'ERROR'
 }
 
 export {
     BUTTON_STATE,
-    ACCOUNT_STATE,
+    ACCOUNT_ROLES,
 }

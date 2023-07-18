@@ -3,21 +3,29 @@ import {
   Error404,
   Error500,
   Error503,
+  Home,
   Login,
 } from "../pages"
 
 const ROUTERS_PATH = {
   login: 'login/',
+  home: 'home/',
+  accounts: 'accounts/',
+  miniTests: 'mini-tests/',
+  speedTests: 'speed-tests/',
+  readingTips: 'reading-tips/',
 }
+
+const toNavigatePath = routerPath => '/' + routerPath.substring(0, routerPath.length - 1)
 
 const MainRoutes = () => {
 
   return (
     <>
-      <div style={{ paddingTop: "50px", minHeight: '100vh' }} className="bg-light">
+      <div style={{ minHeight: '100vh' }} className="bg-light">
         <Routes >
           <Route path="/">
-            <Route index element={<Error404 pageTitle="Home" />} />
+            <Route index element={<Home pageTitle="Home" />} />
             <Route path={ROUTERS_PATH.home} element={<Navigate to="/" replace />} />
 
             {/* Account */}
@@ -34,4 +42,4 @@ const MainRoutes = () => {
   )
 }
 
-export { MainRoutes, ROUTERS_PATH }
+export { MainRoutes, ROUTERS_PATH, toNavigatePath }

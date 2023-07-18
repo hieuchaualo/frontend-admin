@@ -7,11 +7,11 @@ import { MainRoutes } from './routers'
 
 function App() {
   return (
-    <AccountProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AccountProvider>
         <MainRoutes />
-      </BrowserRouter>
-    </AccountProvider>
+      </AccountProvider>
+    </BrowserRouter>
   );
 }
 
