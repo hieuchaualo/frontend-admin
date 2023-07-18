@@ -10,10 +10,9 @@ const LOGIN_STATE = {
   PENDING: "PENDING",
   SUCCESS: "SUCCESS",
   FAILED: "FAILED",
-  ERROR: "ERROR",
 }
 
-const errorMessage = 'You have entered an invalid username or password'
+const errorMessage = 'You have entered an invalid username or password!'
 
 const Login = ({ pageTitle }) => {
   usePageTitle(pageTitle);
@@ -22,9 +21,8 @@ const Login = ({ pageTitle }) => {
   const [loginState, setLoginState] = useState(LOGIN_STATE.NONE);
 
   useEffect(() => {
-    console.log(accountContext._id)
-    if (accountContext._id) navigate('/account');
-  }, [accountContext._id, navigate]);
+    if (accountContext._id && accountContext.roles.includes('admin')) navigate('/account');
+  }, [accountContext._id, accountContext.roles, navigate]);
 
   // all value must true to submit form
   const validationObject = useRef({
@@ -41,17 +39,17 @@ const Login = ({ pageTitle }) => {
       setLoginState(LOGIN_STATE.PENDING);
       const response = await loginAccount(formBody);
       console.log(response)
-      if (response.data?.token) {
+      if (response.data?.token && response.data?.account?.roles.includes('admin')) {
         localStorage.setItem('jwt_token', response.data.token);
         accountContext.init(response.data.account);
         setLoginState(LOGIN_STATE.SUCCESS);
         navigate("/home");
       } else {
-        setLoginState(LOGIN_STATE.ERROR);
+        setLoginState(LOGIN_STATE.FAILED);
       }
     } catch (error) {
       console.error(error)
-      setLoginState(LOGIN_STATE.ERROR);
+      setLoginState(LOGIN_STATE.FAILED);
     }
   };
 
@@ -65,8 +63,6 @@ const Login = ({ pageTitle }) => {
         password: currentTarget.password.value,
       };
       handleLogin(formBody);
-    } else {
-      console.log('not valid')
     }
   };
 
@@ -111,12 +107,16 @@ const Login = ({ pageTitle }) => {
             />
             <button
               type="submit"
-              className="btn btn-orange text-white w-100 mb-4 mt-sm-3 px-sm-4"
+              className="btn btn-orange text-white w-100 mt-2 mb-1 px-sm-4"
               disabled={loginState === LOGIN_STATE.PENDING}
             >
               Login as administrator
             </button>
-            {(loginState === LOGIN_STATE.FAILED) && errorMessage}
+            <small className="text-danger mb-2">
+              {(loginState === LOGIN_STATE.FAILED) && <>
+                <strong>Error:</strong> {errorMessage}
+              </>}
+            </small>
           </form>
         </div>
       </div>
