@@ -49,7 +49,7 @@ function ButtonSubmit({
         </button>
     )
 
-    if (buttonState === BUTTON_STATE.DONE) return (
+    if (buttonState === BUTTON_STATE.SUCCESS) return (
         <button
             className={'btn ' + className}
             type='button'
@@ -59,13 +59,13 @@ function ButtonSubmit({
         </button>
     )
 
-    if (buttonState === BUTTON_STATE.REJECTED) return (
+    if (buttonState === BUTTON_STATE.ERROR) return (
         <button
             className={'btn ' + classNameRejected}
             type='button'
             onClick={resetState}
         >
-            <FontAwesomeIcon icon={faExclamationCircle} /> { } Rejected
+            <FontAwesomeIcon icon={faExclamationCircle} /> { } Error
         </button>
     )
 

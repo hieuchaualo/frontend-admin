@@ -26,11 +26,11 @@ const MainRoutes = () => {
       <div style={{ minHeight: '100vh' }} className="bg-light">
         <Routes >
           <Route path="/">
-            <Route index element={<Home pageTitle="Home" />} />
-            <Route path={ROUTERS_PATH.home} element={<Navigate to="/" replace />} />
+            <Route index element={<Login pageTitle="Login" />} />
+            <Route path={ROUTERS_PATH.login} element={<Navigate to="/" replace />} />
 
             {/* Account */}
-            <Route path={ROUTERS_PATH.login} element={<Login pageTitle="Login" />} />
+            <Route path={ROUTERS_PATH.home} element={<Home pageTitle="Home" />} />
 
             {/* System management */}
             <Route path={ROUTERS_PATH.miniTests} element={<MiniTests pageTitle={'Mini tests'} />} />

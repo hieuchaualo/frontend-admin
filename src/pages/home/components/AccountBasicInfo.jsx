@@ -23,7 +23,7 @@ function AccountBasicInfo() {
                 formData.append('_id', accountContext._id)
                 formData.append('file', picture)
                 const response = await updateAccountAvatar(formData)
-                setAvatar(response.data)
+                setAvatar(response.data.data)
                 document.getElementById('picture').value = null
             } catch (error) {
                 console.error(error)

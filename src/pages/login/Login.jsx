@@ -40,9 +40,10 @@ const Login = ({ pageTitle }) => {
     try {
       setLoginState(LOGIN_STATE.PENDING);
       const response = await loginAccount(formBody);
-      if (response.data?.token && response.data?.account?.roles.includes(ACCOUNT_ROLES.ADMIN)) {
-        localStorage.setItem('jwt_token', response.data.token);
-        accountContext.init(response.data.account);
+      const responseData = response.data.data
+      if (response.status === 201 && responseData.token && responseData.account.roles.includes(ACCOUNT_ROLES.ADMIN)) {
+        localStorage.setItem('jwt_token', responseData.token);
+        accountContext.init(responseData.account);
         setLoginState(LOGIN_STATE.SUCCESS);
         navigate(toNavigatePath(ROUTERS_PATH.home));
       } else {
@@ -81,12 +82,12 @@ const Login = ({ pageTitle }) => {
                 </h1>
                 <div className="row mx-0 p-3">
                   <img
-                  src="/images/logo.png"
-                  className="img-fluid rounded-circle"
-                  alt="SUDOSUDOES Reading Master Logo"
-                  style={{ filter: 'hue-rotate(150deg) saturate(40%) brightness(150%)' }}
-                  draggable={false}
-                />
+                    src="/images/logo.png"
+                    className="img-fluid rounded-circle"
+                    alt="SUDOSUDOES Reading Master Logo"
+                    style={{ filter: 'hue-rotate(150deg) saturate(40%) brightness(150%)' }}
+                    draggable={false}
+                  />
                 </div>
               </div>
             </div>

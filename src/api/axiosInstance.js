@@ -28,7 +28,7 @@ axiosInstance.interceptors.request.use(config => {
 })
 
 axiosInstance.interceptors.response.use(
-  response => response?.data,
+  response => response,
   error => {
     if (error?.response?.data?.statusCode === 401) {
       localStorage.removeItem('jwt_token')

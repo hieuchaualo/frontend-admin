@@ -7,7 +7,7 @@ const timestampToDate = (timestamp) => new Date(timestamp)
 const toImgUrl = (path) => `${API_BASE_URI}/${path}`
 
 /**
- * @param {string} timerId identify name of debounces
+ * @param {String} timerId identify name of debounces
  * @param {Function} func function will call after delay time
  * @param {Number} delay delay time in ms, default `300ms`
  * @returns function after delay

@@ -1,13 +1,17 @@
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useAccount } from "../../..//contexts";
-import { loginAccount } from "../../../api";
-import { ROUTERS_PATH, toNavigatePath } from "../../../routers/MainRoutes";
-import { ACCOUNT_ROLES, BUTTON_STATE } from "../../../utils";
+import { createMiniTest, deleteMiniTestById, updateMiniTest, updateMiniTestNoThumbnail } from "../../../api";
+import { BUTTON_STATE } from "../../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { ButtonSubmit } from "../../../components";
+
+const EDITOR_STATE = {
+  CREATE: 'Create',
+  UPDATE: 'Update'
+}
 
 const quizInit = {
   question: '',
@@ -15,8 +19,8 @@ const quizInit = {
   answers: [''],
 }
 
-const Editor = () => {
-  const navigate = useNavigate();
+const Editor = ({ reset, changeToCreateMode, miniTestInit }) => {
+  console.log(miniTestInit)
   const accountContext = useAccount();
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -24,6 +28,11 @@ const Editor = () => {
   const [thumbnail, setThumbnail] = useState(undefined);
   const [buttonState, setButtonState] = useState(BUTTON_STATE.ENABLE);
 
+  useEffect(() => {
+      setTitle(miniTestInit.title || '')
+      setContent(miniTestInit.content || '')
+      setQuizzes(miniTestInit.quizzes || [quizInit])
+  }, [miniTestInit])
 
   const handleTitleChange = event => {
     setTitle(event.target.value)
@@ -89,28 +98,17 @@ const Editor = () => {
     }
   }
 
-  // all value must true to submit form
-  const validationObject = useRef({
-    title: false,
-    content: false,
-    quizzes: false,
-    options: false,
-    thumbnail: false,
-  });
-
-  const handleOnChange = (key, value) => {
-    validationObject.current[key] = value;
-  };
-
-  const handleLogin = async formBody => {
+  const create = async formBody => {
     try {
       setButtonState(BUTTON_STATE.PENDING);
-      const response = await loginAccount(formBody);
-      if (response.data?.token && response.data?.account?.roles.includes(ACCOUNT_ROLES.ADMIN)) {
-        localStorage.setItem('jwt_token', response.data.token);
-        accountContext.init(response.data.account);
+      const response = await createMiniTest(formBody);
+      if (response.status === 201) {
         setButtonState(BUTTON_STATE.SUCCESS);
-        navigate(toNavigatePath(ROUTERS_PATH.home));
+        reset()
+        setTitle('')
+        setContent('')
+        setQuizzes([quizInit])
+        setThumbnail(undefined)
       } else {
         setButtonState(BUTTON_STATE.ERROR);
       }
@@ -120,31 +118,73 @@ const Editor = () => {
     }
   };
 
-  const handleOnSubmit = event => {
-    event.preventDefault();
-    console.log({ title, content, quizzes, thumbnail })
-    // check the isValid Object is NOT has any fields not valid
-    if (!Object.values(validationObject.current).includes(false)) {
-      const { currentTarget } = event;
-      const formBody = {
-        email: currentTarget.email.value,
-        password: currentTarget.password.value,
-      };
-      handleLogin(formBody);
+  const update = async formBody => {
+    try {
+      setButtonState(BUTTON_STATE.PENDING);
+      let response
+      if (!formBody.thumbnail) {
+        response = await updateMiniTestNoThumbnail(miniTestInit._id, formBody)
+      } else response = await updateMiniTest(miniTestInit._id, formBody);
+      if (response.status === 200) {
+        setButtonState(BUTTON_STATE.SUCCESS);
+        reset()
+      } else {
+        setButtonState(BUTTON_STATE.ERROR);
+      }
+    } catch (error) {
+      console.error(error)
+      setButtonState(BUTTON_STATE.ERROR);
     }
   };
 
+  const handleCreate = event => {
+    event.preventDefault();
+    create({ title, content, quizzes, thumbnail, creator: accountContext._id })
+  };
+
+  const handleUpdate = event => {
+    event.preventDefault();
+    update({
+      title,
+      content,
+      quizzes,
+      thumbnail,
+      creator: accountContext._id,
+    })
+  };
+
+  const handleDelete = async () => {
+    try {
+      setButtonState(BUTTON_STATE.PENDING);
+      const response = await deleteMiniTestById(miniTestInit._id);
+      if (response.status === 200) {
+        setButtonState(BUTTON_STATE.SUCCESS);
+        changeToCreateMode()
+        reset()
+      } else {
+        setButtonState(BUTTON_STATE.ERROR);
+      }
+    } catch (error) {
+      console.error(error)
+      setButtonState(BUTTON_STATE.ERROR);
+    }
+  }
+
+  const resetState = () => {
+    setButtonState(BUTTON_STATE.ENABLE)
+  }
+
   return (
-    <form onSubmit={handleOnSubmit} >
+    <form onSubmit={miniTestInit ? handleUpdate : handleCreate} >
       <div className="row text-orange">
         <h2>
-          <FontAwesomeIcon icon={faEdit} /> <strong>Create new</strong>
+          <FontAwesomeIcon icon={faEdit} /> <strong>{miniTestInit ? EDITOR_STATE.UPDATE : EDITOR_STATE.CREATE}</strong>
         </h2>
       </div>
-      <div style={{ height: '50vh', overflowY: 'scroll' }} className="border rounded rounded-sm p-3">
+      <div style={{ height: '60vh', overflowY: 'scroll' }} className="border rounded rounded-sm p-3">
         <div className="form-group my-2">
           <label htmlFor='thumbnail'>
-            Thumbnail <span className="text-danger">*</span>
+            Thumbnail {!miniTestInit && <span className="text-danger">*</span>}
           </label>
           <input
             name='thumbnail'
@@ -153,7 +193,7 @@ const Editor = () => {
             className={`form-control my-1`}
             onChange={handleThumbnailChange}
             accept='image/png, image/jpg, image/jpeg'
-            required
+            required={!miniTestInit}
           />
           <small className='text-muted'>
             File types supported: PNG, JPG, JPEG. Max size: 1MB
@@ -196,17 +236,6 @@ const Editor = () => {
         <div className="mt-3 fs-5 text-center">Quizzes: {quizzes.length}</div>
 
         <div className="">
-          <hr className="hr" />
-          <div className='btn btn-sm btn-outline-primary' onClick={pushQuiz}>
-            <FontAwesomeIcon icon={faPlus} className='me-2' />
-            Add quiz
-          </div>
-
-          <div className={`btn btn-sm btn-sm btn-outline-secondary ${quizzes.length === 1 && 'disabled'} ms-2`} onClick={popQuiz}>
-            <FontAwesomeIcon icon={faXmark} className='me-2' />
-            Remove quiz
-          </div>
-
           {quizzes.map((quiz, quizIndex) => (
             <div key={quizIndex}>
               <hr className="hr" />
@@ -233,19 +262,6 @@ const Editor = () => {
                 </label>
                 <br />
 
-                <div className='btn btn-sm btn-outline-primary' onClick={() => pushOption(quizIndex)}>
-                  <FontAwesomeIcon icon={faPlus} className='me-2' />
-                  Add option
-                </div>
-
-                <div
-                  className={`btn btn-sm btn-outline-secondary ${quiz.options.length === 0 && 'disabled'} ms-2`}
-                  onClick={() => popOption(quizIndex)}
-                >
-                  <FontAwesomeIcon icon={faXmark} className='me-2' />
-                  Remove option
-                </div>
-
                 {quiz.options.map((option, optionIndex) => <div key={optionIndex} className="row mx-0">
                   <div className="col-auto">{optionIndex + 1}. </div>
                   <input
@@ -258,6 +274,19 @@ const Editor = () => {
                     required
                   />
                 </div>)}
+
+                <div className='btn btn-sm btn-outline-primary' onClick={() => pushOption(quizIndex)}>
+                  <FontAwesomeIcon icon={faPlus} className='me-2' />
+                  Add option
+                </div>
+
+                <div
+                  className={`btn btn-sm btn-outline-secondary ${quiz.options.length === 0 && 'disabled'} ms-2`}
+                  onClick={() => popOption(quizIndex)}
+                >
+                  <FontAwesomeIcon icon={faXmark} className='me-2' />
+                  Remove option
+                </div>
               </div>
 
               <div className="form-group my-2">
@@ -265,19 +294,6 @@ const Editor = () => {
                   Answers: {quiz.answers.length}  <span className="text-danger">*</span>
                 </label>
                 <br />
-
-                <div className='btn btn-sm btn-outline-primary' onClick={() => pushAnswer(quizIndex)}>
-                  <FontAwesomeIcon icon={faPlus} className='me-2' />
-                  Add answer
-                </div>
-
-                <div
-                  className={`btn btn-sm btn-outline-secondary ${quiz.answers.length === 1 && 'disabled'} ms-2`}
-                  onClick={() => popAnswer(quizIndex)}
-                >
-                  <FontAwesomeIcon icon={faXmark} className='me-2' />
-                  Remove answer
-                </div>
 
                 {quiz.answers.map((answer, answerIndex) => <div key={answerIndex} className="row mx-0">
                   <div className="col-auto">{answerIndex + 1}. </div>
@@ -291,18 +307,56 @@ const Editor = () => {
                     required
                   />
                 </div>)}
+
+                <div className='btn btn-sm btn-outline-primary' onClick={() => pushAnswer(quizIndex)}>
+                  <FontAwesomeIcon icon={faPlus} className='me-2' />
+                  Add answer
+                </div>
+
+                <div
+                  className={`btn btn-sm btn-outline-secondary ${quiz.answers.length === 1 && 'disabled'} ms-2`}
+                  onClick={() => popAnswer(quizIndex)}
+                >
+                  <FontAwesomeIcon icon={faXmark} className='me-2' />
+                  Remove answer
+                </div>
               </div>
             </div>
           ))}
         </div>
+
+        <hr className="hr" />
+
+        <div className='btn btn-sm btn-outline-primary' onClick={pushQuiz}>
+          <FontAwesomeIcon icon={faPlus} className='me-2' />
+          Add quiz
+        </div>
+
+        <div className={`btn btn-sm btn-sm btn-outline-secondary ${quizzes.length === 1 && 'disabled'} ms-2`} onClick={popQuiz}>
+          <FontAwesomeIcon icon={faXmark} className='me-2' />
+          Remove quiz
+        </div>
       </div >
-      <button type="submit" className="btn btn-orange my-3 text-white">
-        Create new
-      </button>
+
+      <ButtonSubmit
+        resetState={resetState}
+        buttonState={buttonState}
+        title={miniTestInit ? 'Update' : 'Create new'}
+        className="btn btn-orange my-3 text-white"
+        classNameRejected="btn btn-danger my-3 text-white"
+      />
+
+      {miniTestInit && <>
+        <div className="btn btn-outline-danger my-3 mx-2" onClick={handleDelete}>
+          Delete
+        </div>
+        <div className="btn btn-outline-secondary my-3" onClick={changeToCreateMode}>Cancel</div>
+      </>}
     </form>
   );
 };
 
 export {
-  Editor
+  Editor,
+  EDITOR_STATE,
 }
