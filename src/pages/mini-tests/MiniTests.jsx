@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { usePageTitle } from "../../hooks";
+import { usePageTitle, useSafeNavigateBack } from "../../hooks";
 import { getMiniTestById, searchMiniTest } from "../../api";
 import { debounce, toImgUrl } from "../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { EDITOR_STATE, Editor } from "./components";
 import { useSearchParams } from "react-router-dom";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 const miniTestsListInit = {
   data: [],
@@ -16,6 +17,7 @@ const miniTestsListInit = {
 
 const MiniTests = ({ pageTitle }) => {
   usePageTitle(pageTitle);
+  const navigateBack = useSafeNavigateBack()
   const [searchParams, setSearchParams] = useSearchParams()
   const [editorState, setEditorState] = useState(EDITOR_STATE.CREATE)
   const [miniTestsList, setMiniTestsList] = useState(miniTestsListInit)
@@ -44,81 +46,87 @@ const MiniTests = ({ pageTitle }) => {
     if (response.status === 200) setMiniTestEditing(response.data.data);
   }
 
-  const handleMiniTestDrop = () => {
+  const changeToCreateMode = () => {
     setEditorState(EDITOR_STATE.CREATE)
   }
 
-  const resetSearch = () => {
-    setKeywords('')
-    setSearchParams()
+  const reloadMiniTestsList = async () => {
+    document.getElementById('thumbnail').value = null
+    const response = await searchMiniTest(keywords || undefined);
+    if (response.status === 200) setMiniTestsList(response.data.data);
   }
 
   return (
-    <div style={{ background: 'url("/images/background.jpg")', backgroundSize: 'auto 100vh', minHeight: '100vh' }}>
-      <div style={{ backdropFilter: 'blur(10px)', minHeight: '100vh' }}>
-        <div className="container py-5">
-          <div className="row m-0">
-            <div className="col text-center p-0 me-0 me-md-2 mb-2 mb-md-0">
-              <div className="rounded rounded-sm p-3 bg-light">
-                <h1 className="h1 text-orange my-2">
-                  <strong>
-                    Mini tests management
-                  </strong>
-                </h1>
-                <div className="my-2">
-                  <form className="input-group" onSubmit={handleOnSearch}>
-                    <label className="input-group-text bg-white" htmlFor='search' >
-                      <FontAwesomeIcon icon={faSearch} />
-                    </label>
-                    <input
-                      type="search"
-                      className="form-control form-control"
-                      name='search'
-                      id='search'
-                      autoComplete="off"
-                      placeholder="Find by title"
-                      defaultValue={keywords}
-                    />
-                  </form>
+    <div>
+      <div className="container py-5">
+        <div className="row m-0">
+          <div className="col p-0 me-0 me-md-2 mb-2 mb-md-0">
+            <div className="rounded rounded-sm p-3 bg-white shadow-sm">
+              <div className="row">
+                <div className="col-auto fs-1">
+                  <FontAwesomeIcon icon={faChevronLeft} className="btn btn-lg btn-outline-secondary" onClick={navigateBack}/>
                 </div>
-
-                <div className="my-2 border rounded rounded-sm" style={{ height: '60vh', overflowY: 'scroll' }}>
-                  {miniTestsList.data.map(miniTestList => (
-                    <div
-                      key={miniTestList._id}
-                      className="row m-2 bg-white rounded rounded-sm shadow-hover cursor-pointer"
-                      onClick={() => handleMiniTestPickup(miniTestList._id)}
-                    >
-                      <div className="col-auto p-2">
-                        <img
-                          src={toImgUrl(miniTestList.thumbnail)}
-                          alt="thumbnail"
-                          height={'90px'}
-                          width={'90px'}
-                          className="rounded rounded-lg"
-                          draggable='false'
-                          style={{ objectFit: 'cover' }}
-                        />
-                      </div>
-                      <div className="col text-start fw-bold p-2">
-                        <p>
-                          {miniTestList.title}
-                        </p>
-                        <footer className="blockquote-footer">{miniTestList.creator.name}</footer>
-                      </div>
-                    </div>
-                  ))}
+                <div className="col">
+                  <h1 className="h1 text-orange my-2">
+                    <strong>
+                      Mini tests
+                    </strong>
+                  </h1>
                 </div>
               </div>
-            </div>
+              <div className="my-2">
+                <form className="input-group" onSubmit={handleOnSearch}>
+                  <label className="input-group-text bg-light" htmlFor='search' >
+                    <FontAwesomeIcon icon={faSearch} />
+                  </label>
+                  <input
+                    type="search"
+                    className="form-control bg-light"
+                    name='search'
+                    id='search'
+                    autoComplete="off"
+                    placeholder="Find by title"
+                    defaultValue={keywords}
+                  />
+                </form>
+              </div>
 
-            <div className="col-12 col-md-6 col-xxl-4 rounded rounded-sm p-3 bg-light">
-              <Editor
-                reset={resetSearch}
-                changeToCreateMode={handleMiniTestDrop}
-                miniTestInit={editorState === EDITOR_STATE.UPDATE && miniTestEditing}
-              />
+              <div className="my-2 border rounded rounded-sm bg-light" style={{ height: '60vh', overflowY: 'scroll' }}>
+                {miniTestsList.data.map(miniTestList => (
+                  <div
+                    key={miniTestList._id}
+                    className="row m-2 bg-white rounded rounded-sm shadow-hover cursor-pointer"
+                    onClick={() => handleMiniTestPickup(miniTestList._id)}
+                  >
+                    <div className="col-auto p-2">
+                      <img
+                        src={toImgUrl(miniTestList.thumbnail)}
+                        alt="thumbnail"
+                        height={'90px'}
+                        width={'90px'}
+                        className="rounded rounded-lg"
+                        draggable='false'
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                    <div className="col text-start fw-bold p-2">
+                      <p>
+                        {miniTestList.title}
+                      </p>
+                      <footer className="blockquote-footer">{miniTestList.creator.name}</footer>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
+          </div>
+
+          <div className="col-12 col-md-6 col-xxl-7 rounded rounded-sm p-3 bg-white shadow-sm">
+            <Editor
+              reloadMiniTestsList={reloadMiniTestsList}
+              changeToCreateMode={changeToCreateMode}
+              miniTestInit={editorState === EDITOR_STATE.UPDATE && miniTestEditing}
+            />
           </div>
         </div>
       </div>

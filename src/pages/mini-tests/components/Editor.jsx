@@ -19,8 +19,7 @@ const quizInit = {
   answers: [''],
 }
 
-const Editor = ({ reset, changeToCreateMode, miniTestInit }) => {
-  console.log(miniTestInit)
+const Editor = ({ reloadMiniTestsList, changeToCreateMode, miniTestInit }) => {
   const accountContext = useAccount();
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -29,9 +28,9 @@ const Editor = ({ reset, changeToCreateMode, miniTestInit }) => {
   const [buttonState, setButtonState] = useState(BUTTON_STATE.ENABLE);
 
   useEffect(() => {
-      setTitle(miniTestInit.title || '')
-      setContent(miniTestInit.content || '')
-      setQuizzes(miniTestInit.quizzes || [quizInit])
+    setTitle(miniTestInit.title || '')
+    setContent(miniTestInit.content || '')
+    setQuizzes(miniTestInit.quizzes || [quizInit])
   }, [miniTestInit])
 
   const handleTitleChange = event => {
@@ -104,7 +103,7 @@ const Editor = ({ reset, changeToCreateMode, miniTestInit }) => {
       const response = await createMiniTest(formBody);
       if (response.status === 201) {
         setButtonState(BUTTON_STATE.SUCCESS);
-        reset()
+        reloadMiniTestsList()
         setTitle('')
         setContent('')
         setQuizzes([quizInit])
@@ -127,7 +126,9 @@ const Editor = ({ reset, changeToCreateMode, miniTestInit }) => {
       } else response = await updateMiniTest(miniTestInit._id, formBody);
       if (response.status === 200) {
         setButtonState(BUTTON_STATE.SUCCESS);
-        reset()
+        reloadMiniTestsList()
+        changeToCreateMode()
+        setThumbnail(undefined)
       } else {
         setButtonState(BUTTON_STATE.ERROR);
       }
@@ -160,7 +161,7 @@ const Editor = ({ reset, changeToCreateMode, miniTestInit }) => {
       if (response.status === 200) {
         setButtonState(BUTTON_STATE.SUCCESS);
         changeToCreateMode()
-        reset()
+        reloadMiniTestsList()
       } else {
         setButtonState(BUTTON_STATE.ERROR);
       }
@@ -181,7 +182,7 @@ const Editor = ({ reset, changeToCreateMode, miniTestInit }) => {
           <FontAwesomeIcon icon={faEdit} /> <strong>{miniTestInit ? EDITOR_STATE.UPDATE : EDITOR_STATE.CREATE}</strong>
         </h2>
       </div>
-      <div style={{ height: '60vh', overflowY: 'scroll' }} className="border rounded rounded-sm p-3">
+      <div style={{ height: '60vh', overflowY: 'scroll' }} className="border rounded rounded-sm p-3 bg-light">
         <div className="form-group my-2">
           <label htmlFor='thumbnail'>
             Thumbnail {!miniTestInit && <span className="text-danger">*</span>}
