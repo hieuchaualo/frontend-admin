@@ -33,7 +33,7 @@ function AccountProvider({ children }) {
 
   useEffect(() => {
     if (isHasAccessToken()) getAccountAlreadyLogin()
-    return () => logout()
+    return () => navigate(toNavigatePath(ROUTERS_PATH.login))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
