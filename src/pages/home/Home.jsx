@@ -15,7 +15,6 @@ import { faLightbulb } from "@fortawesome/free-solid-svg-icons";
 const Home = ({ pageTitle }) => {
   usePageTitle(pageTitle);
   const navigate = useNavigate();
-  const accountContext = useAccount();
 
   return (
     <div className="container py-5">

@@ -42,8 +42,7 @@ const Login = ({ pageTitle }) => {
       const response = await loginAccount(formBody);
       const responseData = response.data.data
       if (response.status === 201 && responseData.token && responseData.account.roles.includes(ACCOUNT_ROLES.ADMIN)) {
-        localStorage.setItem('jwt_token', responseData.token);
-        accountContext.init(responseData.account);
+        accountContext.init(responseData.account, responseData.token);
         setLoginState(LOGIN_STATE.SUCCESS);
         navigate(toNavigatePath(ROUTERS_PATH.home));
       } else {
@@ -85,7 +84,6 @@ const Login = ({ pageTitle }) => {
                     src="/images/logo.png"
                     className="img-fluid rounded-circle"
                     alt="SUDOSUDOES Reading Master Logo"
-                    style={{ filter: 'hue-rotate(150deg) saturate(40%) brightness(150%)' }}
                     draggable={false}
                   />
                 </div>

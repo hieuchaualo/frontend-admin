@@ -6,7 +6,6 @@ import { toImgUrl } from '../../../utils'
 import AccountName from './AccountName'
 import { useAccount } from '../../../contexts'
 import { AccountUpdate } from './AccountUpdate'
-import { faCaretSquareLeft } from '@fortawesome/free-solid-svg-icons'
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 
@@ -102,12 +101,12 @@ function AccountBasicInfo() {
                 </div>
                 <div className='text-start'>
                     <AccountUpdate />
-                    <button
-                        type="submit"
+                    <div
+                        onClick={() => accountContext.logout()}
                         className="btn btn-outline-secondary w-100 mt-2 mb-1 px-sm-4"
                     >
                         <FontAwesomeIcon icon={faRightFromBracket} /> Logout
-                    </button>
+                    </div>
                 </div>
             </div>
         </>
