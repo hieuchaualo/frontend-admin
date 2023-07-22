@@ -95,7 +95,7 @@ const MiniTests = ({ pageTitle }) => {
                 {miniTestsList.data.map(miniTestList => (
                   <div
                     key={miniTestList._id}
-                    className="row m-2 bg-white rounded rounded-sm shadow-hover cursor-pointer"
+                    className={"row m-2 bg-white rounded rounded-sm shadow-hover cursor-pointer"}
                     onClick={() => handleMiniTestPickup(miniTestList._id)}
                   >
                     <div className="col-auto p-2">

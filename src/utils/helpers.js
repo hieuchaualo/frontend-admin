@@ -1,4 +1,4 @@
-import { API_BASE_URI } from "./constants"
+import { API_BASE_URI, MINI_TEST_TYPE } from "./constants"
 
 const timestampToDate = (timestamp) => new Date(timestamp)
     .toLocaleString('en-GB', { hour12: false, })
@@ -20,9 +20,16 @@ const debounce = (timerId, func, delay = 300) => {
   };
 };
 
+const getMiniTestType = quiz => {
+  const firstAnswer = quiz.answers[0].toLowerCase()
+  if (firstAnswer === 'true' || firstAnswer === 'false' || firstAnswer === 'no given' || firstAnswer === 'no-given') return MINI_TEST_TYPE.TRUE_FALSE
+  if (quiz.options.length) return MINI_TEST_TYPE.MULTIPLE_OPTIONS
+  return MINI_TEST_TYPE.FILL_THE_BLANK
+}
 
 export {
     timestampToDate,
     toImgUrl,
     debounce,
+    getMiniTestType,
 }

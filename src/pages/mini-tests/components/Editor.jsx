@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAccount } from "../../..//contexts";
 import { createMiniTest, deleteMiniTestById, updateMiniTest, updateMiniTestNoThumbnail } from "../../../api";
-import { BUTTON_STATE } from "../../../utils";
+import { BUTTON_STATE, getMiniTestType } from "../../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
@@ -108,6 +108,7 @@ const Editor = ({ reloadMiniTestsList, changeToCreateMode, miniTestInit }) => {
         setContent('')
         setQuizzes([quizInit])
         setThumbnail(undefined)
+        reloadMiniTestsList()
       } else {
         setButtonState(BUTTON_STATE.ERROR);
       }
@@ -140,17 +141,27 @@ const Editor = ({ reloadMiniTestsList, changeToCreateMode, miniTestInit }) => {
 
   const handleCreate = event => {
     event.preventDefault();
-    create({ title, content, quizzes, thumbnail, creator: accountContext._id })
+    const typeOfQuiz = getMiniTestType(quizzes[0])
+    create({
+      title,
+      content,
+      quizzes,
+      thumbnail,
+      creator: accountContext._id,
+      typeOfQuiz,
+    })
   };
 
   const handleUpdate = event => {
     event.preventDefault();
+    const typeOfQuiz = getMiniTestType(quizzes[0])
     update({
       title,
       content,
       quizzes,
       thumbnail,
       creator: accountContext._id,
+      typeOfQuiz,
     })
   };
 
