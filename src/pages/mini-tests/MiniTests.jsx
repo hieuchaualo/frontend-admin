@@ -3,10 +3,9 @@ import { usePageTitle, useSafeNavigateBack } from "../../hooks";
 import { getMiniTestById, searchMiniTest } from "../../api";
 import { debounce, toImgUrl } from "../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { EDITOR_STATE, Editor } from "./components";
 import { useSearchParams } from "react-router-dom";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 const miniTestsListInit = {
   data: [],
@@ -31,6 +30,7 @@ const MiniTests = ({ pageTitle }) => {
       if (response.status === 200) setMiniTestsList(response.data.data);
     }
     debounce('getMiniTestsList', fetchData(searchParams.get('keywords')));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
   const handleOnSearch = event => {

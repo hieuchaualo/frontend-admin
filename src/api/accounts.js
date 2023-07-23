@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axiosInstance"
+import { axiosInstance, axiosUploadFileInstance } from "./axiosInstance"
 
 function createAccount() {
   return axiosInstance.get('/accounts/create')
@@ -13,11 +13,12 @@ function loginAccount(formBody) {
 }
 
 function updateAccountAvatar(formBody) {
-  return axiosInstance.post('/accounts/avatar', formBody)
+  return axiosUploadFileInstance.patch(`/accounts/avatar`, formBody)
 }
 
-function updateAccountName(formBody) {
-  return axiosInstance.post('/accounts/avatar', formBody)
+
+function updateAccount(formBody) {
+  return axiosInstance.patch('/accounts', formBody)
 }
 
 export {
@@ -25,5 +26,5 @@ export {
   getAccount,
   loginAccount,
   updateAccountAvatar,
-  updateAccountName,
+  updateAccount,
 };

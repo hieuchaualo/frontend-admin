@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { updateAccountName } from '../../../api'
+import { updateAccount } from '../../../api'
 import { useAccount } from '../../../contexts'
 
 
@@ -17,7 +17,7 @@ function AccountName() {
     const handleNameSubmit = async event => {
         try {
             event.preventDefault()
-            await updateAccountName({
+            await updateAccount({
                 _id: accountContext._id,
                 name: newName,
             })

@@ -3,9 +3,8 @@ import { useAccount } from "../../..//contexts";
 import { createMiniTest, deleteMiniTestById, updateMiniTest, updateMiniTestNoThumbnail } from "../../../api";
 import { BUTTON_STATE, getMiniTestType } from "../../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { ButtonSubmit } from "../../../components";
 
 const EDITOR_STATE = {

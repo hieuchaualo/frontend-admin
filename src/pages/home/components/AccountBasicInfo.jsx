@@ -14,15 +14,16 @@ function AccountBasicInfo() {
     const [isEditingAvatar, setIsEditingAvatar] = useState(false)
     const [avatar, setAvatar] = useState(undefined)
 
-    const handleUpdate = async event => {
+    const handleUpdateAvatar = async event => {
         const picture = event.target.files[0]
         if (picture) {
             try {
                 const formData = new FormData()
                 formData.append('_id', accountContext._id)
-                formData.append('file', picture)
+                formData.append('avatar', picture)
                 const response = await updateAccountAvatar(formData)
-                setAvatar(response.data.data)
+                console.log(response.data.data.avatar)
+                if (response.status === 200) setAvatar(response.data.data.avatar)
                 document.getElementById('picture').value = null
             } catch (error) {
                 console.error(error)
@@ -50,7 +51,7 @@ function AccountBasicInfo() {
                             width: '100px',
                         }}>
                         <img
-                            src={avatar || (accountContext.thumbnail ? toImgUrl(accountContext.thumbnail) : "/images/logo192.png")}
+                            src={avatar ? toImgUrl(avatar) : toImgUrl(accountContext.avatar)}
                             className="rounded rounded-1 h-100 w-100"
                             style={{ objectFit: 'cover', position: 'relative' }}
                             alt='avatar'
@@ -87,7 +88,7 @@ function AccountBasicInfo() {
                             type='file'
                             name='picture'
                             id='picture'
-                            onChange={handleUpdate}
+                            onChange={handleUpdateAvatar}
                             hidden
                             accept='image/png, image/jpg, image/jpeg'
                         />

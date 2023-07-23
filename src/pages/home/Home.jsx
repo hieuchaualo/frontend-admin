@@ -1,10 +1,7 @@
-import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePageTitle } from "../../hooks";
-import { useAccount } from "../../contexts";
 import { ROUTERS_PATH, toNavigatePath } from "../../routers/MainRoutes";
 import AccountBasicInfo from "./components/AccountBasicInfo";
-import { debounce } from "../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserEdit } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";

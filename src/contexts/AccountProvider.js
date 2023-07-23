@@ -4,7 +4,7 @@ import { getAccount } from '../api'
 import { useNavigate } from 'react-router-dom';
 import { ROUTERS_PATH, toNavigatePath } from '../routers';
 
-const AccountContext = createContext({ _id: '', name: '', email: '', roles: [], init: () => { }, logout: () => { } })
+const AccountContext = createContext({ _id: '', name: '', avatar: '', email: '', roles: [], init: () => { }, logout: () => { } })
 
 function AccountProvider({ children }) {
   const navigate = useNavigate();
@@ -16,12 +16,12 @@ function AccountProvider({ children }) {
 
   const logout = () => {
     localStorage.removeItem('jwt_token');
-    setAccount({ ...account, _id: '', name: '', email: '', roles: [] })
+    setAccount({ ...account, _id: '', name: '', avatar: '', email: '', roles: [] })
     navigate(toNavigatePath(ROUTERS_PATH.login))
   }
 
   const [account, setAccount] = useState({
-    _id: '', name: '', email: '', roles: [], init, logout,
+    _id: '', name: '', avatar: '', email: '', roles: [], init, logout,
   })
 
   const getAccountAlreadyLogin = async () => {

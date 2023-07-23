@@ -1,9 +1,11 @@
 import { useRef, useState } from "react";
 import { BUTTON_STATE } from "../../../utils";
-import { updateAccountName } from "../../../api";
+import { updateAccount } from "../../../api";
 import { PasswordField } from "../../../components";
+import { useAccount } from "../../../contexts";
 
 const AccountUpdate = () => {
+    const accountContext = useAccount()
     const [updateAccountState, setUpdateAccountState] = useState(BUTTON_STATE.ENABLE);
 
     // all value must true to submit form
@@ -18,7 +20,8 @@ const AccountUpdate = () => {
     const handleUpdateAccount = async formBody => {
         try {
             setUpdateAccountState(BUTTON_STATE.PENDING);
-            const response = await updateAccountName(formBody);
+            // eslint-disable-next-line no-unused-vars
+            const response = await updateAccount(formBody);
             setUpdateAccountState(BUTTON_STATE.SUCCESS);
         } catch (error) {
             console.error(error)
@@ -32,7 +35,7 @@ const AccountUpdate = () => {
         if (!Object.values(validationObject.current).includes(false)) {
             const { currentTarget } = event;
             const formBody = {
-                email: currentTarget.email.value,
+                _id: accountContext._id,
                 password: currentTarget.password.value,
             };
             handleUpdateAccount(formBody);
