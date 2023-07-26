@@ -27,7 +27,7 @@ const MiniTests = ({ pageTitle }) => {
     const fetchData = async _keywords => {
       if (_keywords !== keywords) setKeywords(_keywords)
       const response = await searchMiniTest(_keywords || undefined);
-      if (response.status === 200) setMiniTestsList(response.data.data);
+      if (response?.status === 200) setMiniTestsList(response.data.data);
     }
     debounce('getMiniTestsList', fetchData(searchParams.get('keywords')));
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,7 +43,7 @@ const MiniTests = ({ pageTitle }) => {
   const handleMiniTestPickup = async miniTestId => {
     const response = await getMiniTestById(miniTestId);
     setEditorState(EDITOR_STATE.UPDATE)
-    if (response.status === 200) setMiniTestEditing(response.data.data);
+    if (response?.status === 200) setMiniTestEditing(response.data.data);
   }
 
   const changeToCreateMode = () => {
