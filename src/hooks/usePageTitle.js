@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-const BRAND_NAME = 'SS Reading Master'
+const BRAND_NAME = 'Reading Master'
 
 /**
  * @use Set page title with brand name: BRAND_NAME - pageTitle

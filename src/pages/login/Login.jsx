@@ -83,7 +83,7 @@ const Login = ({ pageTitle }) => {
                   <img
                     src="/images/logo.png"
                     className="img-fluid rounded-circle"
-                    alt="SUDOSUDOES Reading Master Logo"
+                    alt="Reading Master Logo"
                     draggable={false}
                   />
                 </div>
