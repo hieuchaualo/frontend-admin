@@ -59,22 +59,6 @@ const Home = ({ pageTitle }) => {
           <div className="row p-3">
             <div
               className="btn btn-lg btn-orange text-light"
-              onClick={() => navigate(toNavigatePath(ROUTERS_PATH.speedTests))}
-            >
-              <div className="row">
-                <div className="col-10 text-start">
-                  <FontAwesomeIcon icon={faClockRotateLeft} className="pe-2" />
-                  Speed tests
-                </div>
-                <div className="col-2 text-end">
-                  <FontAwesomeIcon icon={faArrowRight} />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="row p-3">
-            <div
-              className="btn btn-lg btn-orange text-light"
               onClick={() => navigate(toNavigatePath(ROUTERS_PATH.readingTips))}
             >
               <div className="row">

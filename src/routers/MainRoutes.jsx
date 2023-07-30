@@ -6,15 +6,15 @@ import {
   Home,
   Login,
   MiniTests,
+  Account,
+  ReadingTip,
 } from "../pages"
-import { Account } from "../pages/account"
 
 const ROUTERS_PATH = {
   login: 'login/',
   home: 'home/',
   accounts: 'accounts/',
   miniTests: 'mini-tests/',
-  speedTests: 'speed-tests/',
   readingTips: 'reading-tips/',
 }
 
@@ -36,6 +36,7 @@ const MainRoutes = () => {
             {/* System management */}
             <Route path={ROUTERS_PATH.accounts} element={<Account pageTitle={'Accounts'} />} />
             <Route path={ROUTERS_PATH.miniTests} element={<MiniTests pageTitle={'Mini tests'} />} />
+            <Route path={ROUTERS_PATH.readingTips} element={<ReadingTip pageTitle={'Mini tests'} />} />
 
             {/* Error */}
             <Route path="*" element={<Error404 pageTitle="Not found" />} />
