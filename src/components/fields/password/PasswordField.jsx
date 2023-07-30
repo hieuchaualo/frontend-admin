@@ -13,10 +13,11 @@ const PasswordField = ({
   isRequired = true,
   isDisabled = false,
   isAutofocus = false,
+  defaultIsShowPassword = false,
 }) => {
   const [invalidMessagePassword, setInvalidPasswordMessage] = useState("");
   const [inputValue, setInputValue] = useState(defaultValue);
-  const [isShowPassword, setIsShowPassword] = useState(false);
+  const [isShowPassword, setIsShowPassword] = useState(defaultIsShowPassword);
 
   const toggleIsShowPassword = () => setIsShowPassword(!isShowPassword)
 
@@ -40,7 +41,6 @@ const PasswordField = ({
       <div className="input-group">
         <input
           name={fieldName}
-          id={fieldName}
           type={isShowPassword ? 'text' : 'password'}
           className={`form-control my-1 ${invalidMessagePassword && "is-invalid"}`}
           placeholder={placeholder}

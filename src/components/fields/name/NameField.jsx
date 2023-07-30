@@ -20,11 +20,11 @@ const NameField = ({
     const valueCleaned = removeSpecialCharacter(eventTargetValue);
     setInputValue(valueCleaned);
     if (isValidMinMax(valueCleaned.length, 2, 32)) {
-      setInvalidNameMessage(invalidMessage);
-      handleValidate(fieldName, false);
-    } else {
       setInvalidNameMessage("");
       handleValidate(fieldName, true);
+    } else {
+      setInvalidNameMessage(invalidMessage);
+      handleValidate(fieldName, false);
     }
   };
 
@@ -35,7 +35,6 @@ const NameField = ({
       </label>
       <input
         name={fieldName}
-        id={fieldName}
         type="text"
         className={`form-control my-1 ${invalidNameMessage && "is-invalid"}`}
         placeholder={placeholder}

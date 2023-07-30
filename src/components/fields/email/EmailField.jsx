@@ -34,7 +34,6 @@ const EmailField = ({
       </label>
       <input
         name={fieldName}
-        id={fieldName}
         type="email"
         className={`form-control my-1 ${invalidEmailMessage && "is-invalid"}`}
         placeholder={placeholder}

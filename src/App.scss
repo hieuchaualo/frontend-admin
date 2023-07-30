@@ -17,6 +17,7 @@ $theme-colors: (
   "grey": #e5e8eb,
   "secondary": #6c757d,
   "third": #353840,
+  "second": #424649,
   "dark": #212529,
 );
 
@@ -38,8 +39,10 @@ $theme-colors: (
 }
 
 .scrollbar-hidden {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .text-line {
@@ -60,6 +63,42 @@ $theme-colors: (
 
 .bg-light-50 {
   background-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.btn-hover {
+  &-dark {
+    background-color: #212529;
+
+    &:hover {
+      background-color: #424649;
+    }
+  }
+
+  &-white {
+    background-color: #FFF;
+
+    &:hover {
+      background-color: #e5e8eb;
+    }
+  }
+
+  &-orange {
+    background-color: #FFF;
+
+    &:hover {
+      background-color: #E86F5D;
+      color: #f8f9fa;
+    }
+  }
+}
+
+.form-check-input-orange {
+  border-color: #E86F5D !important;
+
+  &:checked {
+    background-color: #E86F5D !important;
+    border-color: #E86F5D !important;
+  }
 }
 
 .background-color-none-hover:hover {

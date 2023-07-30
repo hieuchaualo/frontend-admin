@@ -26,14 +26,13 @@ function AccountProvider({ children }) {
 
   const getAccountAlreadyLogin = async () => {
     const response = await getAccount()
-    const responseData = response.data.data
+    const responseData = response?.data?.data
     if (response.status === 200 && responseData.roles.includes(ACCOUNT_ROLES.ADMIN)) init(responseData)
     else navigate(toNavigatePath(ROUTERS_PATH.login));
   }
 
   useEffect(() => {
-    if (isHasAccessToken()) getAccountAlreadyLogin()
-    return () => navigate(toNavigatePath(ROUTERS_PATH.login))
+    getAccountAlreadyLogin()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

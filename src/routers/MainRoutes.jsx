@@ -7,6 +7,7 @@ import {
   Login,
   MiniTests,
 } from "../pages"
+import { Account } from "../pages/account"
 
 const ROUTERS_PATH = {
   login: 'login/',
@@ -33,6 +34,7 @@ const MainRoutes = () => {
             <Route path={ROUTERS_PATH.home} element={<Home pageTitle="Home" />} />
 
             {/* System management */}
+            <Route path={ROUTERS_PATH.accounts} element={<Account pageTitle={'Accounts'} />} />
             <Route path={ROUTERS_PATH.miniTests} element={<MiniTests pageTitle={'Mini tests'} />} />
 
             {/* Error */}

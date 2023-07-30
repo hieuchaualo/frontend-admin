@@ -4,7 +4,7 @@ const timestampToDate = (timestamp) => new Date(timestamp)
     .toLocaleString('en-GB', { hour12: false, })
     .replace(',', ' -')
 
-const toImgUrl = (path) => `${API_BASE_URI}/${path}`
+const toImgUrl = path => path ? `${API_BASE_URI}/${path}` : ''
 
 /**
  * @param {String} timerId identify name of debounces

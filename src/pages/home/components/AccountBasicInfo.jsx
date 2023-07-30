@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faImage } from '@fortawesome/free-solid-svg-icons'
+import { faImage, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { updateAccountAvatar } from '../../../api'
 import { toImgUrl } from '../../../utils'
 import AccountName from './AccountName'
 import { useAccount } from '../../../contexts'
 import { AccountUpdate } from './AccountUpdate'
-import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 
 function AccountBasicInfo() {
@@ -22,7 +21,6 @@ function AccountBasicInfo() {
                 formData.append('_id', accountContext._id)
                 formData.append('avatar', picture)
                 const response = await updateAccountAvatar(formData)
-                console.log(response.data.data.avatar)
                 if (response.status === 200) setAvatar(response.data.data.avatar)
                 document.getElementById('picture').value = null
             } catch (error) {

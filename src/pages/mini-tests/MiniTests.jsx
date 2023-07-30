@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { usePageTitle, useSafeNavigateBack } from "../../hooks";
+import { usePageTitle } from "../../hooks";
 import { getMiniTestById, searchMiniTest } from "../../api";
 import { debounce, toImgUrl } from "../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { EDITOR_STATE, Editor } from "./components";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const miniTestsListInit = {
   data: [],
@@ -16,7 +16,7 @@ const miniTestsListInit = {
 
 const MiniTests = ({ pageTitle }) => {
   usePageTitle(pageTitle);
-  const navigateBack = useSafeNavigateBack()
+  const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const [editorState, setEditorState] = useState(EDITOR_STATE.CREATE)
   const [miniTestsList, setMiniTestsList] = useState(miniTestsListInit)
@@ -30,7 +30,7 @@ const MiniTests = ({ pageTitle }) => {
       if (response?.status === 200) setMiniTestsList(response.data.data);
     }
     debounce('getMiniTestsList', fetchData(searchParams.get('keywords')));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
   const handleOnSearch = event => {
@@ -64,7 +64,11 @@ const MiniTests = ({ pageTitle }) => {
             <div className="rounded rounded-sm p-3 bg-white shadow-sm">
               <div className="row">
                 <div className="col-auto fs-1">
-                  <FontAwesomeIcon icon={faChevronLeft} className="btn btn-lg btn-outline-secondary" onClick={navigateBack}/>
+                  <FontAwesomeIcon
+                    icon={faChevronLeft}
+                    className="btn btn-lg btn-outline-secondary"
+                    onClick={() => navigate('/', { replace: true })}
+                  />
                 </div>
                 <div className="col">
                   <h1 className="h1 text-orange my-2">
