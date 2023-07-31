@@ -1,5 +1,5 @@
 import { useState, createContext, useContext, useMemo, useEffect } from 'react'
-import { ACCOUNT_ROLES, isHasAccessToken } from '../utils'
+import { ACCOUNT_ROLES } from '../utils'
 import { getAccount } from '../api'
 import { useNavigate } from 'react-router-dom';
 import { ROUTERS_PATH, toNavigatePath } from '../routers';

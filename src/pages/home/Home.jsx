@@ -3,7 +3,7 @@ import { usePageTitle } from "../../hooks";
 import { ROUTERS_PATH, toNavigatePath } from "../../routers/MainRoutes";
 import AccountBasicInfo from "./components/AccountBasicInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserEdit, faClockRotateLeft, faArrowRight, faListCheck, faLightbulb } from "@fortawesome/free-solid-svg-icons";
+import { faUserEdit, faArrowRight, faListCheck, faLightbulb } from "@fortawesome/free-solid-svg-icons";
 
 const Home = ({ pageTitle }) => {
   usePageTitle(pageTitle);
