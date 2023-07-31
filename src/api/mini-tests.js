@@ -13,10 +13,10 @@ function updateMiniTestNoThumbnail(miniTestId, formData) {
   return axiosInstance.patch(`/mini-tests/no-thumbnail/${miniTestId}`, formData)
 }
 
-function searchMiniTest(keywords, limit, page) {
+function searchMiniTest(keywords, page, limit){
   return axiosInstance.get(`/mini-tests`, {
     params: {
-      keywords, limit, page
+      keywords, page, limit
     }
   })
 }

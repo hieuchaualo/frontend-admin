@@ -13,10 +13,10 @@ function updateReadingTipNoThumbnail(readingTipId, formData) {
   return axiosInstance.patch(`/reading-tips/no-thumbnail/${readingTipId}`, formData)
 }
 
-function searchReadingTip(keywords, limit, page) {
+function searchReadingTip(keywords, page, limit) {
   return axiosInstance.get(`/reading-tips`, {
     params: {
-      keywords, limit, page
+      keywords, page, limit
     }
   })
 }

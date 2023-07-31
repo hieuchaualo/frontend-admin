@@ -27,6 +27,20 @@ const ReadingTip = ({ pageTitle }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
+  const handleClickShowMore = async () => {
+    try {
+      const response = await searchReadingTip(keywords || undefined, readingTipsList.currentPage + 1);
+      if (response?.status === 200) setReadingTipsList({
+        data: [...readingTipsList.data, ...response.data.data.data],
+        limit: response.data.data.limit,
+        currentPage: response.data.data.currentPage,
+        totalPages: response.data.data.totalPages,
+      });
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleOnSearch = event => {
     event.preventDefault()
     const value = event.currentTarget.search.value.trim()
@@ -122,6 +136,17 @@ const ReadingTip = ({ pageTitle }) => {
                     </div>
                   </div>
                 ))}
+
+                {(readingTipsList.currentPage < readingTipsList.totalPages) &&
+                  < div className="row m-2">
+                    <div
+                      className="btn btn-orange text-light"
+                      onClick={handleClickShowMore}
+                    >
+                      Show more
+                    </div>
+                  </div>
+                }
               </div>
             </div>
           </div>

@@ -23,12 +23,31 @@ const MiniTests = ({ pageTitle }) => {
   const [miniTestEditing, setMiniTestEditing] = useState()
   const [keywords, setKeywords] = useState('')
 
-  useEffect(() => {
-    const fetchData = async _keywords => {
+  const fetchData = async (_keywords, _page) => {
+    try {
       if (_keywords !== keywords) setKeywords(_keywords)
-      const response = await searchMiniTest(_keywords || undefined);
+      const response = await searchMiniTest(_keywords || undefined, _page || undefined);
       if (response?.status === 200) setMiniTestsList(response.data.data);
+    } catch (error) {
+      console.log(error)
     }
+  }
+
+  const handleClickShowMore = async () => {
+    try {
+      const response = await searchMiniTest(keywords || undefined, miniTestsList.currentPage + 1);
+      if (response?.status === 200) setMiniTestsList({
+        data: [...miniTestsList.data, ...response.data.data.data],
+        limit: response.data.data.limit,
+        currentPage: response.data.data.currentPage,
+        totalPages: response.data.data.totalPages,
+      });
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
     debounce('getMiniTestsList', fetchData(searchParams.get('keywords')));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
@@ -51,9 +70,7 @@ const MiniTests = ({ pageTitle }) => {
   }
 
   const reloadMiniTestsList = async () => {
-    document.getElementById('thumbnail').value = null
-    const response = await searchMiniTest(keywords || undefined);
-    if (response.status === 200) setMiniTestsList(response.data.data);
+    fetchData(keywords)
   }
 
   return (
@@ -121,6 +138,17 @@ const MiniTests = ({ pageTitle }) => {
                     </div>
                   </div>
                 ))}
+
+                {(miniTestsList.currentPage < miniTestsList.totalPages) &&
+                  < div className="row m-2">
+                    <div
+                      className="btn btn-orange text-light"
+                      onClick={handleClickShowMore}
+                    >
+                      Show more
+                    </div>
+                  </div>
+                }
               </div>
             </div>
           </div>
@@ -134,7 +162,7 @@ const MiniTests = ({ pageTitle }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
