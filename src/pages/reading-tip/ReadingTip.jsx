@@ -37,7 +37,7 @@ const ReadingTip = ({ pageTitle }) => {
         totalPages: response.data.data.totalPages,
       });
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

@@ -29,7 +29,7 @@ const MiniTests = ({ pageTitle }) => {
       const response = await searchMiniTest(_keywords || undefined, _page || undefined);
       if (response?.status === 200) setMiniTestsList(response.data.data);
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -43,7 +43,7 @@ const MiniTests = ({ pageTitle }) => {
         totalPages: response.data.data.totalPages,
       });
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
